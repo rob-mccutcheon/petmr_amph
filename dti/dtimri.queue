@@ -1,0 +1,20 @@
+#!/bin/tcsh
+
+#$ -m n
+#$ -M example@kcl.ac.uk
+#$ -o $HOME/logs/dtimri_o
+#$ -e $HOME/logs/dtimri_e
+#$ -q global
+#$ -N dtimri_queue
+
+# Remember to load any modules required - default enviornment not active for queued jobs
+# module load anaconda/3.6
+module load mrtrix/3.0_rc2
+
+set working_data='/data/project/AMPH/src/dti/'
+set list='/data/project/AMPH/src/dti/subjects.list'
+
+set file="`awk 'FNR==$SGE_TASK_ID' ${list}`"
+cd working_data
+
+python dtimri.py ${file} {"dtimri"}

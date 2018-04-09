@@ -1,0 +1,13 @@
+data_sorting/imanova_datasort.py
+ - run from python36 environment
+ - call specifying subj no and session e.g.: python imanova_datasort.py 501 A
+
+dti/
+- amend dti/subjects.list to include only required subjects
+- call as e.g. for 50 subjects: qsub -t 1-50 dti.queue
+-.queue calls .py calls .sh
+
+
+qsub -N mrijob -t 1 mri.queue
+qsub -N dtijob -t 1 dti.queue
+qsub -hold_jid mrijob,dtijob -t 1 dtimri.queue

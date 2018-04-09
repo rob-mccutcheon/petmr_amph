@@ -1,0 +1,20 @@
+#!/bin/tcsh
+
+#$ -m n
+#$ -M example@kcl.ac.uk
+#$ -o $HOME/logs/fs_o
+#$ -e $HOME/logs/fs_e
+#$ -q global
+#$ -N fs_queue
+
+# Remember to load any modules required - default enviornment not active for queued jobs
+# module load anaconda/3.6
+module load freesurfer/6.0.0
+
+set working_data='/data/project/AMPH/src/dti/'
+set list='/data/project/AMPH/src/dti/subjects.list'
+
+set file="`awk 'FNR==$SGE_TASK_ID' ${list}`"
+cd working_data
+
+python dtimri.py ${file} {"fs"}
