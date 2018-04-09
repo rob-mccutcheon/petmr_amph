@@ -87,9 +87,9 @@ converter.cmdline
 # Move and rename files
 move_files('/*BRAVO*nii*', ('anat/'+subject_id+'_'+visit_id+'_T1w.nii'))
 
-move_files('/*task1*nii*', ('func/'+subject_id+'_'+visit_id+'_task-CA_run-1.nii'))
-move_files('/*task2*nii*', ('func/'+subject_id+'_'+visit_id+'_task-CA_run-2.nii'))
-move_files('/*rsfMRI*nii*', ('func/'+subject_id+'_'+visit_id+'_task-rest.nii'))
+move_files('/*task1*nii*', ('func/'+subject_id+'_'+visit_id+'_task-CA_run-1_bold.nii'))
+move_files('/*task2*nii*', ('func/'+subject_id+'_'+visit_id+'_task-CA_run-2_bold.nii'))
+move_files('/*rsfMRI*nii*', ('func/'+subject_id+'_'+visit_id+'_task-rest_bold.nii'))
 
 move_files('/*flip*DTI.nii', ('dwi/'+subject_id+'_'+visit_id+'_acq-flipped_dwi.nii'))
 move_files('/**DTI.nii*', ('dwi/'+subject_id+'_'+visit_id+'_acq-normal_dwi.nii'))
