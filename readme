@@ -8,6 +8,6 @@ dti/
 -.queue calls .py calls .sh
 
 
-qsub -N mrijob -t 1 mri.queue
-qsub -N dtijob -t 1 dti.queue
-qsub -hold_jid mrijob,dtijob -t 1 dtimri.queue
+qsub -t 1 mri.queue
+qsub -t 1 dti.queue
+qsub -hold_jid mri_queue,dti_queue -t 1 dtimri.queue
