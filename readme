@@ -8,6 +8,10 @@ dti/
 -.queue calls .py calls .sh
 
 
+## miakat
+- make sure that you have fsl 5.0.9 NOT 5.0.10 (this will give you some nii_gz related erro), even if you unload 5.0.10 make sure it is not loaded by your cshrc
+
+## calling jobs
 qsub -t 1 mri.queue
 qsub -t 1 dti.queue
-qsub -hold_jid mri_queue,dti_queue -t 1 dtimri.queue
+qsub -hold_jid_ad mri_queue,dti_queue -t 1 dtimri.queue
