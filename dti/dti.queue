@@ -23,5 +23,3 @@ set file="`awk 'FNR==$SGE_TASK_ID' ${list}`"
 cd working_data
 
 python dtimri.py ${file} {"dti"}
-
-test
