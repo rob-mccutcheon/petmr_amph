@@ -13,7 +13,7 @@ orig_data_dir = '/data/project/AMPH/data/sub-'+subject_id+'/ses-'+session_id
 dti_dir = '/data/project/AMPH/rob/dti/'
 src_dir = '/data/project/AMPH/src/dti/'
 data_dir = dti_dir+'sub-'+subject_id+'/ses-'+session_id
-fs_dir = '/data/project/AMPH/rob/fs_structural/'+subject_id
+fs_dir = '/data/project/AMPH/rob/fs_structural/'+'sub-'+subject_id
 
 
 # Make the subjects folder
