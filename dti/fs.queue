@@ -9,6 +9,10 @@
 
 # Remember to load any modules required - default enviornment not active for queued jobs
 # module load anaconda/3.6
+module purge
+module load nan/default
+module load sge
+module load fsl/5.0.10
 module load freesurfer/6.0.0
 
 set working_data='/data/project/AMPH/src/dti/'

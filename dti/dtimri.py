@@ -17,15 +17,15 @@ fs_dir = '/data/project/AMPH/rob/fs_structural/'+subject_id
 
 
 # Make the subjects folder
-def make_sub_fold(folder):
+def make_subj_fold(folder):
     if os.path.exists(folder):
         print("folder present")
     else:
         os.makedirs(folder)
 
 
-make_sub_fold(data_dir)
-make_sub_fold(fs_dir)
+make_subj_fold(data_dir)
+make_subj_fold(fs_dir)
 
 shutil.copy((orig_data_dir+'/dwi/'+bids_id+'_acq-normal_dwi.nii'), data_dir)
 shutil.copy((orig_data_dir+'/dwi/'+bids_id+'_acq-flipped_dwi.nii'), data_dir)
@@ -47,7 +47,7 @@ elif mriordti == "dti":
     subprocess.call(["bash", "dti.sh", data_dir, bids_id])
 
 elif mriordti == "fs":
-    subprocess.call(["bash", "fs.sh", fs_dir, subject_id, session_id])
+    subprocess.call(["bash", "fs.sh", fs_dir, subject_id, session_id, bids_id, orig_data_dir])
 
 elif mriordti == "dtimri":
     subprocess.call(["bash", "dtimri.sh", data_dir, bids_id])

@@ -15,3 +15,12 @@ dti/
 qsub -t 1 mri.queue
 qsub -t 1 dti.queue
 qsub -hold_jid_ad mri_queue,dti_queue -t 1 dtimri.queue
+
+## making the fressurfer connectome
+https://github.com/BIDS-Apps/MRtrix3_connectome
+
+line 340: freesurfer/mri/aparc.a2009s+aseg.mgz
+
+https://github.com/mattcieslak/easy_lausanne
+
+glasser or easy lausanne
