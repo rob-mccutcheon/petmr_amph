@@ -24,3 +24,9 @@ line 340: freesurfer/mri/aparc.a2009s+aseg.mgz
 https://github.com/mattcieslak/easy_lausanne
 
 glasser or easy lausanne
+
+
+,ri/orig/001.mgz - is the original structural
+
+easy lausanne - make sure freesurfer and fsl loaded, make your freesurfer SUBJECTS dir point to your specific subject(ie export=), then subject_id is e.g. ses-A
+point to you mean b0 file make sure fsl 5.0.9 and freesurfer6.0.0 (check which of these is mperative)
