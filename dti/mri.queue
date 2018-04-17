@@ -6,6 +6,7 @@
 #$ -e $HOME/logs/mri_e
 #$ -q global
 #$ -N mri_queue
+#$ -l hostname=!nanlnx13
 
 module purge
 module load nan/default
