@@ -1,0 +1,18 @@
+#!/bin/tcsh
+
+#$ -m n
+#$ -M example@kcl.ac.uk
+#$ -o $HOME/logs/test
+#$ -e $HOME/logs/test
+#$ -q global
+#$ -N test
+
+
+
+
+set working_data='/data/project/AMPH/src/'
+set list='/data/project/AMPH/src/dti/subjects.list'
+
+set file="`awk 'FNR==$SGE_TASK_ID' ${list}`"
+cd working_data
+python conda_test.py
