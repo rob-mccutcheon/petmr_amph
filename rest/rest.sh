@@ -30,7 +30,7 @@ fnirt --in=structural_reg_MNIlinear.nii --config=T1_2_MNI152_2mm --fout=warp --i
 #coregister the functional to the mni'd structural - consider using 'epireg
 cd ../func
 flirt -in resting_mcf_masked.nii -ref ../anat/structural_reg_betMNI.nii.nii -out resting_mcf_coreg.nii -omat affine.mat -dof 6
-epi_reg --epi=resting_mcf_masked.nii --t1=structural_reg_MNIlinear --t1brain=../anat/structural_reg_betMNI.nii. --out=epi2struct
+epi_reg --epi=resting_mcf_masked.nii --t1=../anat/structural_reg_MNIlinear.nii --t1brain=../anat/structural_reg_betMNI.nii. --out=epi2struct
 
 #smooth
 # The gaussian kernel takes its argument as sigma instead of the FWHM,  to convert see
