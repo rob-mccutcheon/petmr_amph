@@ -23,8 +23,8 @@ antsApplyTransforms -d 3 -i $structural -r $structural -t ants10GenericAffine.ma
 # segmentation
 5ttgen fsl structural_reg.nii structural_reg_5tt.nii
 
-# normalisation of MNI template to subject dti-registered structural
-antsRegistrationSyNQuick.sh -d 3 -f structural_reg.nii -m ../../../atlases/mni_icbm152_t1_tal_nlin_sym_09a.nii -t s -o mni_ants
-
-# apply transforms from previous step to your volumetric atlas of choice (e.g. AAL/Gordon )
-antsApplyTransforms -d 3 -v 1 -i ../../../atlases/aal.nii -o warped_atlas_label.nii -r structural_reg.nii -n NearestNeighbor -t mni_ants1Warp.nii.gz -t mni_ants0GenericAffine.mat
+### Uncomment if you wish to generate volumetric atlases
+## normalisation of MNI template to subject dti-registered structural
+#antsRegistrationSyNQuick.sh -d 3 -f structural_reg.nii -m ../../../atlases/mni_icbm152_t1_tal_nlin_sym_09a.nii -t s -o mni_ants
+## apply transforms from previous step to your volumetric atlas of choice (e.g. AAL/Gordon )
+#antsApplyTransforms -d 3 -v 1 -i ../../../atlases/aal.nii -o warped_atlas_label.nii -r structural_reg.nii -n NearestNeighbor -t mni_ants1Warp.nii.gz -t mni_ants0GenericAffine.mat

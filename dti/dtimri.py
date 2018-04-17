@@ -50,4 +50,4 @@ elif mriordti == "fs":
     subprocess.call(["bash", "fs.sh", fs_dir, subject_id, session_id, bids_id, orig_data_dir])
 
 elif mriordti == "dtimri":
-    subprocess.call(["bash", "dtimri.sh", data_dir, bids_id])
+    subprocess.call(["bash", "dtimri.sh", data_dir, fs_dir, session_id])

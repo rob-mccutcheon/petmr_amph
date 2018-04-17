@@ -30,3 +30,7 @@ glasser or easy lausanne
 
 easy lausanne - make sure freesurfer and fsl loaded, make your freesurfer SUBJECTS dir point to your specific subject(ie export=), then subject_id is e.g. ses-A
 point to you mean b0 file make sure fsl 5.0.9 and freesurfer6.0.0 (check which of these is mperative)
+
+
+##Resting State
+https://github.com/CobraLab/documentation/wiki/Resting-State-fMRI-Preprocessing-Pipeline-(work-in-progress)
