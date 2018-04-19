@@ -1,0 +1,12 @@
+CRITICAL : 2018-04-12 17:01:52,320 : runCmd     : Return Value: 1
+CRITICAL : 2018-04-12 17:01:52,827 : runCmd     : Return Value: 254
+CRITICAL : 2018-04-12 17:01:55,346 : runCmd     : Return Value: 253
+ERROR    : 2018-04-12 17:01:55,347 : main       : An error occurred. Linear transformation file /data/project/AMPH/rob/lausanne/T1-TO-b0.mat not generated.
+CRITICAL : 2018-04-12 17:04:32,632 : runCmd     : Return Value: 1
+CRITICAL : 2018-04-12 17:04:33,138 : runCmd     : Return Value: 254
+CRITICAL : 2018-04-12 17:04:35,159 : runCmd     : Return Value: 253
+ERROR    : 2018-04-12 17:04:35,160 : main       : An error occurred. Linear transformation file /data/project/AMPH/rob/lausanne/T1-TO-b0.mat not generated.
+CRITICAL : 2018-04-12 17:13:34,462 : runCmd     : Return Value: 1
+CRITICAL : 2018-04-12 17:13:34,969 : runCmd     : Return Value: 254
+CRITICAL : 2018-04-12 17:13:36,987 : runCmd     : Return Value: 253
+ERROR    : 2018-04-12 17:13:36,987 : main       : An error occurred. Linear transformation file /data/project/AMPH/rob/lausanne/T1-TO-b0.mat not generated.

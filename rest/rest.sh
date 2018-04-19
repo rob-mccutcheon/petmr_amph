@@ -11,11 +11,9 @@ mkdir -p $analysisfolder/resting/$subject_id/$session_id/{anat, func}
 cp /data/project/AMPH/data/$subject_id/$session_id/func/$subject_id'_'$session_id'_task-rest_bold.nii' \
 $func_folder/resting.nii
 
-#slice timing
+#slice timing & motion correction
 cd $func_folder
 slicetimer -i resting.nii -o resting_st.nii --odd -r 2
-
-#motion correction
 mcflirt -in resting_st.nii -o resting_mcf.nii -plots -mats
 
 #average across time sries, brain extract and use this to mask full run (the 0.3 threshold is reccomended for ica_aroma)
@@ -58,15 +56,10 @@ python /data/project/AMPH/src/ICA-AROMA-master/ICA_AROMA.py -in $func_folder/smo
 motion_ICs=$(<./ICA_AROMA/classified_motion_ICs.txt)
 fsl_regfilt -i resting_mcf_masked.nii.gz -d ./ICA_AROMA/melodic.ica/melodic_mix -f $motion_ICs -o unsmoothed_aroma.nii
 
-#rigid coregister unsmoothed_aroma to the structural
-# flirt -in unsmoothed_aroma.nii -ref ../anat/structural_reg_bet.nii -out unsmoothed_coreg.nii  -dof 6 -omat
-# firt -in unsmoothed_aroma.nii -applyxfm -init epi2struct.mat -o testflirt
-
 #rigid coregister the structural to unsmoothed_aroma
 flirt -in ../anat/structural_reg_bet.nii -ref resting_bet.nii -out structural_coreg.nii  -dof 6 -omat struc2func.mat
 
-
-#Taken from ottavias wm_csf_tfilt script
+#Below taken from ottavias wm_csf_tfilt script
 #Segment structural
 cd $anat_folder
 mkdir structural.fast
@@ -87,45 +80,24 @@ fslmeants -i ../func/unsmoothed_aroma.nii.gz -m CSFmask2_func --no_bin -o CSF.ti
 paste WM.timeseries CSF.timeseries > nuisance.timeseries
 
 #regress these timeseries out
-fslmaths rest.feat/ICA_AROMA/denoised_func_data_nonaggr.nii.gz -Tmean tempMean
+cd $func_folder
+fslmaths unsmoothed_aroma.nii -Tmean tempMean
+fsl_glm -i unsmoothed_aroma.nii -o confounds -d ../anat/nuisance.timeseries --demean --out_res=residual
 
-fsl_glm -i rest.feat/ICA_AROMA/denoised_func_data_nonaggr.nii.gz -o confounds -d nuisance.timeseries --demean --out_res=residual
-
+# high pass temporal filtering
 fslmaths residual -bptf $sigma -1 -add tempMean denoised_func_data
 
-applywarp --ref=rest.feat/reg/standard --in=denoised_func_data --out=denoised_func_data_FSL --warp=rest.feat/reg/highres2standard_warp --premat=rest.feat/reg/example_func2highres.mat --interp=trilinear
+# Use transform from above to move lausanne atlases onto epi (use ANTs as serious headache with flirt origins/reference image)
+antsRegistrationSyNQuick.sh -d 3 -f ../anat/structural_reg_bet.nii.gz -m resting_bet.nii.gz -t r -o func2struc_ants
+mkdir lausanne_epiregistered
+resolutions='33 60 125 250 500'
+for resolution in $resolutions
+do
+    antsApplyTransforms -d 3 -i $analysisfolder/fs_structural/$subject_id/$session_id/lausanne/'ROIv_scale'$resolution'.nii.gz' \
+    -r $analysisfolder/fs_structural/$subject_id/$session_id/lausanne/'ROIv_scale'$resolution'.nii.gz' \
+    -t [func2struc_ants0GenericAffine.mat,1] -o lausanne_epiregistered/lausanne_epireg_$resolution.nii -n NearestNeighbor
+done
 
+#mask atlases to only include active voxels
 
-
-
-
-
-
-
-
-
-
-
-WarpImageMultiTransform 3 WMmask_eroded.nii.gz WMmask_func.nii.gz -R meica_3TEs/mean_func.nii.gz -i func2struct/func2struct_Affine.txt
-
-fslmaths WMmask_func -mas meica_3TEs/mean_func.nii.gz WMmask2_func
-
-fslmeants -i meica_3TEs/rest_medn.nii.gz -m WMmask2_func --no_bin -o WM.timeseries
-
-#CSF signal extraction
-fslmaths structural.fast/structural_pve_0.nii.gz -thr 0.9 -ero CSFmask_eroded
-
-WarpImageMultiTransform 3 CSFmask_eroded.nii.gz CSFmask_func.nii.gz -R meica_3TEs/mean_func.nii.gz -i func2struct/func2struct_Affine.txt
-
-fslmaths CSFmask_func -mas meica_3TEs/mean_func.nii.gz CSFmask2_func
-
-fslmeants -i meica_3TEs/rest_medn.nii.gz -m CSFmask2_func --no_bin -o CSF.timeseries
-
-#Remove WM and CSF signal
-paste WM.timeseries CSF.timeseries > nuisance.timeseries
-
-fslmaths meica_3TEs/rest_medn.nii.gz -Tmean tempMean
-
-fsl_glm -i meica_3TEs/rest_medn.nii.gz -o confounds -d nuisance.timeseries --demean --out_res=residual
-
-fslmaths residual -bptf $sigma -1 -add tempMean denoised_func_data.nii.gz
+#extract timeseries
