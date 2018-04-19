@@ -1,4 +1,21 @@
+#!/bin/tcsh
+
+#$ -m n
+#$ -M example@kcl.ac.uk
+#$ -o $HOME/logs/rest_o
+#$ -e $HOME/logs/rest_e
+#$ -q global
+#$ -N rest_queue
+
+
 module load fsl/5.0.9
-module load ica_aroma/0.3
+module load ants/2.2.0
 module load anaconda/2.7
-git
+
+set working_data='/data/project/AMPH/src/rest/'
+set list='/data/project/AMPH/src/dti/subjects.list'
+
+set file="`awk 'FNR==$SGE_TASK_ID' ${list}`"
+cd working_data
+
+bash rest.sh ${file}
