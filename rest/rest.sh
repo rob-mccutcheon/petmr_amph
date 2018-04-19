@@ -96,8 +96,32 @@ do
     antsApplyTransforms -d 3 -i $analysisfolder/fs_structural/$subject_id/$session_id/lausanne/'ROIv_scale'$resolution'.nii.gz' \
     -r $analysisfolder/fs_structural/$subject_id/$session_id/lausanne/'ROIv_scale'$resolution'.nii.gz' \
     -t [func2struc_ants0GenericAffine.mat,1] -o lausanne_epiregistered/lausanne_epireg_$resolution.nii -n NearestNeighbor
+    fslmaths lausanne_epiregistered/lausanne_epireg_$resolution.nii -mas resting_bet_mask lausanne$resolution.masked.nii
 done
 
-#mask atlases to only include active voxels
+flirt -in $analysisfolder/fs_structural/$subject_id/$session_id/lausanne/'ROIv_scale'$resolution'.nii.gz' \
+-init struc2func.mat -applyxfm -ref denoised_func_data -o ./lausanne_epiregistered/flirtlausanne
 
+#mask atlases to only include active voxels
+fslmaths resting_mcf.nii -mas resting_bet_mask resting_mcf_masked.nii
 #extract timeseries
+
+fslmeants -i denoised_func_data.nii.gz --label=lausanne$resolution.masked.nii -o roitimeseries
+
+
+flirt -in ./lausanne_epiregistered/flirtlausanne.nii \
+-init shift.mat -applyxfm -ref denoised_func_data -o ./lausanne_epiregistered/flirtlausanneshifted
+
+
+
+#try with ants using - seems to be working
+antsRegistrationSyNQuick.sh -d 3 -f ../anat/structural_reg_bet.nii.gz -m resting_bet.nii.gz -t r -o func2struc_ants
+mkdir lausanne_epiregistered 60 125 250 500
+resolutions='33'
+for resolution in $resolutions
+do
+    antsApplyTransforms -d 3 -i $analysisfolder/fs_structural/$subject_id/$session_id/lausanne/'ROIv_scale'$resolution'.nii.gz' \
+    -r resting_bet.nii.gz \
+    -t [func2struc_ants0GenericAffine.mat,1] -o lausanne_epiregistered/lausanne_epireg_$resolution.nii -n NearestNeighbor
+    fslmaths lausanne_epiregistered/lausanne_epireg_$resolution.nii -mas resting_bet_mask lausanne$resolution.masked.nii
+done
